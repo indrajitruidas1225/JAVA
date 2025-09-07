@@ -200,3 +200,58 @@ JIT = Part of JVM that speeds execution by converting bytecode → native code
 * **JVM** → Executes bytecode
 * **JIT** → Optimizes JVM execution
 
+---
+Your explanation is mostly correct ✅, but a couple of clarifications are needed:
+
+1. **String variables are not stored in the stack** — the *reference* (like `a` and `b`) lives in the stack, but the actual string object (`"Hello"`) lives in the **Heap (String Pool)**.
+2. When you do `new String("Hello")`, the `"Hello"` literal is always ensured in the **String Pool** (created if not already present). Then a **new object** is created in the Heap.
+
+I’ve refined and reformatted your markdown:
+
+---
+
+## 7. What is JAVA String Pool?
+
+The **Java String Pool** (or String Intern Pool) is a special memory region inside the **Heap** where all unique string literals are stored.
+
+### Example 1: String Literals
+
+```java
+String a = "Hello";
+String b = "Hello";
+```
+
+* `"Hello"` will be stored **once** in the String Pool.
+* Both `a` and `b` will point to the same object in the pool.
+* No new objects are created for `b`.
+
+---
+
+### Example 2: Using `new String()`
+
+```java
+String a = new String("Hello");
+String b = new String("Hello");
+```
+
+* Here, each call to `new String("Hello")` creates a **new object in the Heap**.
+* The literal `"Hello"` is still stored in the **String Pool** (created if not already present).
+* So:
+
+  * `"Hello"` exists in the **String Pool**.
+  * Two separate `"Hello"` objects are created in the **Heap**.
+
+---
+
+## 11. What will happen if we don't declare the main as static?
+
+If we don’t declare the main method as static, the JVM will not recognize it as the entry point and a runtime error will occur.
+
+Defining any function as static means, the function belongs to the class itself, there's no need to create object separately. 
+When we run any java program, JVM recognizes the main function seeing the signature
+
+`public static void main(String[] args)`
+
+JVM does not have the methodology to create an object and call the main function. So it won't be able to find the main function, the entry point.
+
+---
