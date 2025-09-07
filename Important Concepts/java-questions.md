@@ -255,3 +255,67 @@ When we run any java program, JVM recognizes the main function seeing the signat
 JVM does not have the methodology to create an object and call the main function. So it won't be able to find the main function, the entry point.
 
 ---
+
+## 12. String `.intern()` in Java
+
+The `.intern()` method ensures that a string refers to the **String Pool** object instead of a separate heap object.
+
+- If the string is **already present in the pool**, `.intern()` returns the reference to that pooled object.  
+- If the string is **not in the pool**, it adds it to the pool and then returns the pooled reference.  
+
+
+### Example 1: Without `.intern()`
+```java
+String s1 = new String("Hello");
+String s2 = "Hello";
+
+System.out.println(s1 == s2); // false (heap vs pool)
+````
+
+* `s1` → Heap object
+* `s2` → String Pool object
+* Different references
+
+---
+
+### Example 2: With `.intern()`
+
+```java
+String s1 = new String("Hello");
+String s2 = "Hello";
+String s3 = s1.intern();
+
+System.out.println(s1 == s2); // false (heap vs pool)
+System.out.println(s2 == s3); // true (both pool)
+```
+
+* `s1` → Heap object
+* `s2` → String Pool object
+* `s3` → After `.intern()`, points to the pool `"Hello"`
+* Now `s2 == s3` is **true**
+
+---
+
+### Example 3: New String Not in Pool
+
+```java
+String s1 = new String("World");
+String s2 = s1.intern();
+String s3 = "World";
+
+System.out.println(s1 == s2); // false (heap vs pool)
+System.out.println(s2 == s3); // true (both pool)
+```
+
+* `"World"` is added to the String Pool.
+* `s2` and `s3` point to the **same pooled object**.
+
+---
+
+### Why Use `.intern()`?
+
+1. **Memory efficiency** – ensures only one copy of each string exists in the pool.
+2. **Performance in comparison** – pooled strings can be compared with `==` (reference comparison) instead of `.equals()`.
+
+---
+
