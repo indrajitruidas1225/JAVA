@@ -319,3 +319,148 @@ System.out.println(s2 == s3); // true (both pool)
 
 ---
 
+### 13. Explain Packages in JAVA
+
+Packages in JAVA can be defined as the related types of classes, interfaces.  
+Packages are used in Java in order to prevent naming conflicts, control access, and make searching/locating and usage of classes, interfaces, etc easier.
+
+There are various advantages of defining packages in Java:
+
+- Packages avoid name clashes.  
+- The Package provides easier access control.  
+- We can also have the hidden classes that are not visible outside and are used by the package.  
+- It is easier to locate the related classes.  
+
+There are two types of packages in Java:
+1. User-defined packages  
+2. Built-in packages  
+
+---
+
+### 14. Explain different data types in Java
+
+There are 2 types of data types in Java as mentioned below:
+
+1. **Primitive Data Type**  
+2. **Non-Primitive Data Type (Object Data type)**  
+
+---
+
+## Primitive Data Type
+
+- Primitive data types are defined by Java.  
+- They store simple values directly into memory.  
+- They are not objects.  
+
+There are **8 types of primitive data types** in Java:
+
+- `byte`, `short`, `int`, `long`, `float`, `double`, `char`, `boolean`
+
+---
+
+## Non-Primitive (Reference) Data Types
+
+- These are created by programmers.  
+- They refer to objects (store memory address, not the actual value).  
+- They can have methods to perform operations.  
+- The default value is `null` if not initialized.  
+
+Example:
+
+```java
+String name = "John";        // String is a class (non-primitive)
+int[] numbers = {1, 2, 3};   // Array is non-primitive
+Employee emp = new Employee(); // emp is a reference to an object
+```
+
+👉 **Note:**
+String in Java is a non-primitive (reference) data type, but it’s also a class provided by Java itself inside the `java.lang` package.
+So it is not programmer-defined, but it still falls under non-primitive.
+
+---
+
+### What is Wrapper Class in JAVA and why do we need it?
+
+In JAVA, wrapper classes are classes that **convert primitive data types into Objects**.
+Every primitive data type in Java has a corresponding wrapper class in the `java.lang` package.
+They are useful when we need **object representation of primitives**.
+
+The wrapper class is an **object class** that encapsulates the primitive data types, and we need them for the following reasons:
+
+* Wrapper classes are final and immutable
+* Provides methods like `valueOf()`, `parseInt()`, etc.
+* It provides the feature of **autoboxing** and **unboxing**
+* Collections Framework – like `ArrayList`, `HashMap` → only work with objects, not primitives
+
+---
+
+## Boxing
+
+Manually converting primitive → wrapper
+
+```java
+int x = 5;
+Integer y = Integer.valueOf(x);
+```
+
+---
+
+## AutoBoxing
+
+Java automatically converts primitive → wrapper
+
+```java
+Integer z = x;  // auto-boxing
+```
+
+---
+
+## Unboxing
+
+Converting wrapper → primitive
+
+```java
+int p = y.intValue();
+```
+
+---
+
+## Auto-unboxing
+
+Java automatically converts wrapper → primitive
+
+```java
+int q = y;  // auto-unboxing
+```
+
+---
+
+### Why do we need Unboxing?
+
+Unboxing is converting a **wrapper object → its primitive value**.
+We need it because sometimes we store data as objects, but we must use them as primitives for **calculations, conditions, etc**.
+
+Example:
+
+```java
+Integer a = 10;   // Wrapper
+Integer b = 20;
+int sum = a + b;  // auto-unboxing happens here
+System.out.println(sum);  // 30
+```
+
+---
+
+### Performance Note
+
+* **Primitive types** are stored in the **stack** (fast access).
+* **Objects (wrappers)** are stored in the **heap**.
+
+If we kept everything as wrappers, operations would be **slower**.
+So Java unboxes when actual numeric/boolean operations are needed.
+
+```
+
+
+
+
