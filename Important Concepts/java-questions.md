@@ -379,7 +379,7 @@ So it is not programmer-defined, but it still falls under non-primitive.
 
 ---
 
-### What is Wrapper Class in JAVA and why do we need it?
+### 15. What is Wrapper Class in JAVA and why do we need it?
 
 In JAVA, wrapper classes are classes that **convert primitive data types into Objects**.
 Every primitive data type in Java has a corresponding wrapper class in the `java.lang` package.
@@ -461,6 +461,153 @@ So Java unboxes when actual numeric/boolean operations are needed.
 
 ---
 
+### 16. What is a Class Variable (Static Variable)?
 
+In Java, class variables are the same as static variables. They are declared using the keyword `static`.  
+Static variables belong to the class, not the object. Memory is allocated only once for it. All the objects share the same copy of the variable.
 
+```java
+// Java program to demonstrate use of Class Variable
+class abc {
+    public static int ctr = 0;
+    public abc() { ctr++; }
+    public static void main(String[] args)
+    {
+        abc obj1 = new abc();
+        abc obj2 = new abc();
+        abc obj3 = new abc();
+        System.out.println("Number of objects created are "
+                           + abc.ctr);
+    }
+}
+// output - Number of objects created are 3
+````
 
+---
+
+### 17. Explain the difference between instance variable and a class variable.
+
+#### Instance Variable
+
+* A class variable **without the static modifier** is called an instance variable.
+* It is unique to each object (instance) of the class and is not shared between instances.
+
+#### Class Variable
+
+* A class variable is declared at the class level using the keyword `static`.
+* These variables can only have **one value** when applied to various objects.
+* They are **shared by all class members** since they are not connected to any specific object of the class.
+
+---
+
+### 18. What is an I/O Stream in Java?
+
+* **I/O** stands for **Input / Output**.
+* A **stream** is simply a sequence of data.
+* An **I/O stream** is used to **read data from a source (input)** or **write data to a destination (output)**.
+
+#### Types of I/O Streams in Java
+
+Java provides two main types:
+
+1. **Byte Streams**
+
+   * Used for reading/writing **binary data** (images, audio, video, raw data).
+   * They process data **8 bits (1 byte) at a time**.
+   * **Classes:**
+
+     * `InputStream` (abstract class)
+     * `OutputStream` (abstract class)
+   * **Subclasses:** `FileInputStream`, `FileOutputStream`, `BufferedInputStream`, etc.
+
+2. **Character Streams**
+
+   * Used for reading/writing **text data (characters)**.
+   * They process data **16 bits (Unicode characters) at a time**.
+   * **Classes:**
+
+     * `Reader` (abstract class)
+     * `Writer` (abstract class)
+   * **Subclasses:** `FileReader`, `FileWriter`, `BufferedReader`, etc.
+
+---
+
+### 19. What is the difference between the Reader/Writer class hierarchy and the InputStream/OutputStream class hierarchy?
+
+#### 🔹 InputStream / OutputStream (Byte Streams)
+
+* Designed for **binary data (raw bytes)**.
+* Work with **8-bit data (1 byte at a time)**.
+* Suitable for:
+
+  * Images, audio, video
+  * Serialized objects
+  * Any non-text data
+* **Base classes:**
+
+  * `InputStream` → for reading bytes
+  * `OutputStream` → for writing bytes
+* **Examples:**
+
+  * `FileInputStream`, `FileOutputStream`
+  * `BufferedInputStream`, `BufferedOutputStream`
+
+#### 🔹 Reader / Writer (Character Streams)
+
+* Designed for **text (character) data**.
+* Work with **16-bit Unicode characters (char)**.
+* Suitable for:
+
+  * Plain text files (`.txt`)
+  * Reading/writing characters, strings
+* **Base classes:**
+
+  * `Reader` → for reading characters
+  * `Writer` → for writing characters
+* **Examples:**
+
+  * `FileReader`, `FileWriter`
+  * `BufferedReader`, `PrintWriter`
+
+---
+
+#### Example Programs
+
+**Byte Stream Example**
+
+```java
+FileInputStream fis = new FileInputStream("image.png");
+int i;
+while ((i = fis.read()) != -1) {
+    System.out.print(i); // prints byte values
+}
+fis.close();
+```
+
+**Character Stream Example**
+
+```java
+FileReader fr = new FileReader("data.txt");
+int ch;
+while ((ch = fr.read()) != -1) {
+    System.out.print((char)ch); // prints characters
+}
+fr.close();
+```
+
+---
+
+### 20. What are the super most classes for all the streams?
+
+All the stream classes can be divided into two categories:
+
+* **ByteStream classes** → further divided into `InputStream` and `OutputStream`.
+* **CharacterStream classes** → further divided into `Reader` and `Writer`.
+
+#### Super-most classes:
+
+* For all **InputStream** classes → `java.io.InputStream`
+* For all **OutputStream** classes → `java.io.OutputStream`
+* For all **Reader** classes → `java.io.Reader`
+* For all **Writer** classes → `java.io.Writer`
+---
