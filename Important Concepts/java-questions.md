@@ -611,3 +611,111 @@ All the stream classes can be divided into two categories:
 * For all **Reader** classes → `java.io.Reader`
 * For all **Writer** classes → `java.io.Writer`
 ---
+
+Here’s your content reformatted with cleaner **Markdown structure** while keeping everything else exactly the same:
+
+---
+
+## 21. String and StringBuffer
+
+* **String** is immutable, once created, its value can't be changed. Any operation (`concat`, `replace`) creates a new object.
+* **StringBuffer** is mutable, it can be modified without creating a new object.
+
+🔹 **Performance**
+
+* String is slower for frequent modifications (because new objects are created every time).
+* StringBuffer is faster for repeated modifications since it modifies the same object.
+
+🔹 **Thread Safety**
+
+* Since String is immutable, it's automatically thread-safe.
+* StringBuffer methods are synchronized, so it's thread-safe but a bit slower than StringBuilder.
+
+✅ **Use Cases**
+
+* Use **String** when the content will not change often (e.g., constants, messages, small operations).
+* Use **StringBuffer** when you need to modify strings often in multi-threaded programs.
+* Use **StringBuilder** (Java 5+) when you need mutability but don’t need thread-safety (faster than StringBuffer).
+
+**Example**
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // String (Immutable)
+        String s = "Hello";
+        s.concat(" World");
+        System.out.println("String: " + s); // Hello (not changed)
+
+        // StringBuffer (Mutable)
+        StringBuffer sb = new StringBuffer("Hello");
+        sb.append(" World");
+        System.out.println("StringBuffer: " + sb); // Hello World
+    }
+}
+```
+---
+
+## 22. StringBuffer and StringBuilder
+
+* Both **StringBuffer** and **StringBuilder** are mutable classes.
+* They can be modified without creating new objects.
+
+🔹 **Thread Safety**
+
+* **StringBuffer** is thread-safe (methods are synchronized → only one thread can modify it at a time). Safe in multithreaded environments, but slower.
+* **StringBuilder** is not thread-safe (methods are not synchronized).
+
+🔹 **Performance**
+
+* **StringBuffer** → Slower, ensures data consistency in multi-threaded programs.
+* **StringBuilder** → Faster, best choice for single-threaded programs.
+
+**Use Cases**
+
+* Use **StringBuffer** in multi-threaded programs.
+* Use **StringBuilder** in single-threaded programs (most common case).
+
+**Example**
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // StringBuffer example
+        StringBuffer sbf = new StringBuffer("Hello");
+        sbf.append(" World");
+        System.out.println("StringBuffer: " + sbf);
+
+        // StringBuilder example
+        StringBuilder sbd = new StringBuilder("Hello");
+        sbd.append(" Java");
+        System.out.println("StringBuilder: " + sbd);
+    }
+}
+```
+
+---
+
+## 23. Which among StringBuilder or StringBuffer should be preferred when there are a lot of updates required to be done in the data?
+
+* **String** is immutable, making it inefficient for scenarios requiring frequent updates.
+* Instead, we can use **StringBuilder** or **StringBuffer**.
+* If **thread safety** is required → use **StringBuffer**.
+* If **performance** is a priority in a single-threaded context → use **StringBuilder** (faster, no synchronization overhead).
+
+---
+
+## 24. Why is StringBuffer called mutable?
+
+* **StringBuffer** in Java represents a **changeable string of characters**.
+* Unlike `String` (immutable), `StringBuffer` allows you to change a string's contents without constantly creating new objects.
+* Hence, it is called **mutable**.
+
+---
+
+## 25. How is the creation of a String using `new()` different from that of a literal?
+
+* **String Literal**: When we declare a string literal, it is stored in the **String Pool (heap, special memory area)**. If the same content already exists, the reference is reused.
+* **String using `new()`**: Always creates a **new object in heap memory**, even if an object with the same content already exists.
+
+---
