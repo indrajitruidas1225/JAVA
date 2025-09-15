@@ -247,3 +247,198 @@ class MyThread extends Thread {
     }
 }
 ```
+---
+
+# 🔄 Lifecycle of a Thread in Java
+
+A thread in Java goes through several **states** during its lifecycle. These states are defined in the `Thread.State` enum.
+
+---
+
+## **1. New (Created State)**
+
+* When we create a `Thread` object, but before calling `start()`, the thread is in the **new state**.
+* It is not yet eligible for running.
+
+```java
+Thread t = new Thread(() -> System.out.println("Hello"));
+System.out.println(t.getState()); // NEW
+```
+
+---
+
+## **2. Runnable State**
+
+* When we call `start()`, the thread moves to the **Runnable** state.
+* It means the thread is ready to run, but whether it executes immediately depends on the **OS scheduler**.
+* Multiple threads can be in this state, waiting for CPU time.
+
+```java
+t.start();
+System.out.println(t.getState()); // RUNNABLE (waiting for CPU)
+```
+
+---
+
+## **3. Running State**
+
+* When the **CPU scheduler picks** a thread from the runnable pool, it enters the **running state**.
+* Only one thread per core can be in this state at a time. (If we check the state, it shows runnable)
+
+---
+
+## **4. Waiting / Timed Waiting State**
+
+A running thread can be **paused**:
+
+* **Waiting** → Thread waits indefinitely until another thread signals it (e.g., using `wait()`, `join()`).
+* **Timed Waiting** → Thread pauses for a specific time (e.g., `sleep(ms)`, `join(ms)`).
+
+```java
+class MyThread extends Thread {
+    public void run() {
+        try {
+            Thread.sleep(1000); // Timed Waiting
+            synchronized(this) {
+                wait(); // Waiting
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+---
+
+## **5. Blocked State**
+
+* A thread is **blocked** when it tries to enter a synchronized block/method but another thread already holds the lock.
+* Once the lock is released, the blocked thread becomes runnable again.
+
+---
+
+## **6. Terminated (Dead State)**
+
+* After completing its task (or if stopped forcefully), the thread enters the **terminated state**.
+* Once terminated, a thread **cannot be restarted**.
+
+```java
+Thread t1 = new Thread(() -> System.out.println("Task done"));
+t1.start();
+t1.join();
+System.out.println(t1.getState()); // TERMINATED
+```
+
+---
+
+# 📊 Thread Lifecycle Diagram (Textual)
+
+```
+ NEW  --(start())-->  RUNNABLE --(scheduler picks)--> RUNNING
+   ↑                        ↓                           ↓
+   |                   (yield, wait, sleep, join)  (execution finishes)
+   |                        ↓                           ↓
+   └<----------------  WAITING / TIMED WAITING <------ TERMINATED
+                              ↑
+                         (notify/notifyAll, timeout)
+```
+
+---
+
+✅ **Quick Summary for Interviews**
+
+* **NEW** → Object created but not started.
+* **RUNNABLE** → Eligible to run, waiting for CPU.
+* **RUNNING** → Actively executing on CPU.
+* **WAITING / TIMED\_WAITING** → Temporarily paused.
+* **BLOCKED** → Waiting to acquire a lock.
+* **TERMINATED** → Finished execution.
+
+---
+
+# 🔒 Synchronization and Race Condition
+
+When two or more threads work on a shared resource **without proper coordination**, a **race condition** can occur.
+This happens because multiple threads may try to **read and update the same variable simultaneously**, leading to unexpected results.
+
+---
+
+## ❌ Example: Race Condition
+
+```java
+class Counter {
+    int count = 0;
+
+    public void increment() {
+        count++; // not atomic (read, modify, write)
+    }
+}
+
+public class RaceDemo {
+    public static void main(String[] args) throws InterruptedException {
+        Counter c = new Counter();
+
+        Thread t1 = new Thread(() -> {
+            for (int i = 0; i < 1000; i++) c.increment();
+        });
+        Thread t2 = new Thread(() -> {
+            for (int i = 0; i < 1000; i++) c.increment();
+        });
+
+        t1.start();
+        t2.start();
+        t1.join();
+        t2.join();
+
+        System.out.println("Final Count: " + c.count);
+        // Expected: 2000, but often < 2000 due to race condition
+    }
+}
+```
+
+👉 This happens because `count++` is **not atomic** — it is actually 3 steps:
+
+1. Read value of `count`
+2. Increment it
+3. Write back the new value
+
+If two threads execute these steps simultaneously, increments can get lost.
+
+---
+
+## ✅ Solution: Synchronization
+
+### 1. Synchronized Method
+
+```java
+public synchronized void increment() {
+    count++; 
+}
+```
+
+Here, the intrinsic lock is held on the **object instance** (`this`). Only one thread can execute `increment()` at a time.
+
+---
+
+### 2. Synchronized Block
+
+```java
+public void increment() {
+    synchronized (this) { // 'this' refers to the *Counter object*, not the thread
+        count++;
+    }
+}
+```
+
+👉 Small correction to your note: `this` refers to the **current object** (the instance of `Counter`), not the thread.
+The thread acquires the lock on the object before executing the block.
+
+---
+
+## 📝 Key Point
+
+* Synchronization ensures **mutual exclusion**, so only one thread accesses the shared resource at a time.
+* This prevents race conditions, but may reduce performance due to **thread contention**.
+
+---
