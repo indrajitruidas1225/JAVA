@@ -147,3 +147,24 @@ with `ReentrantLock`, you can **time out, back off, or get interrupted**, thus a
 
 ---
 
+### Fairness of Lock
+
+Fairness in locks determines the order in which multiple threads acquire the lock. By default, a `ReentrantLock` is **non-fair**, meaning that any waiting thread can attempt to acquire the lock, and there is no guaranteed order. This can lead to higher throughput but some threads may be "starved."
+If we enable fairness (`new ReentrantLock(true)`), threads acquire the lock in the order they requested it (FIFO), ensuring predictable scheduling but potentially reducing overall performance.
+
+---
+
+### Read-Write Reentrant Lock
+
+A **ReadWriteLock** (commonly `ReentrantReadWriteLock`) separates lock access into **read** and **write** locks.
+
+* **Read Lock**: Multiple threads can hold the read lock simultaneously as long as no thread holds the write lock. This improves performance when reads are frequent.
+* **Write Lock**: Only one thread can hold the write lock, and it blocks all readers and writers until it is released.
+
+This design is useful when read operations are much more common than writes, as it allows higher concurrency.
+
+---
+
+
+
+
