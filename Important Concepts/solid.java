@@ -330,10 +330,3 @@ With SOLID:
 * Testing becomes easier.
 * Spring’s dependency injection works naturally.
 * Microservices design becomes cleaner.
-
-If you want, I can next explain:
-
-* SOLID in Spring Boot context
-* SOLID with a real-world project example
-* Interview-ready answers for 2 years experience
-* Common mistakes developers make while applying SOLID
